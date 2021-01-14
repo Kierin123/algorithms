@@ -3,7 +3,11 @@
 #include <string.h>
 #include <time.h>
 
-#define STACK_LENGTH 5
+struct Node
+{
+    int data;
+    struct Node *next;
+};
 
 enum
 {
@@ -11,17 +15,17 @@ enum
     STATUS = 1,
     PUT_FRONT = 2,
     PUT_BACK = 3,
-    TAKE_FRONT = 4,
-    TAKE_BAKC = 5,
+    PUT_BETWEEN = 4,
+    TAKE_BACK = 5,
     SORT = 6,
-    REVERSE = 7,
+    DELETE_KEY = 7,
 
 };
 
 void Init_program()
 {
     system("clear");
-    printf("#####################################\n");
+    printf("\n#####################################\n");
     printf("	Linked list exercises\n");
     printf("#####################################\n");
     printf("\n");
@@ -32,32 +36,96 @@ void Init_program()
     printf("	TAKE FRONT - 4\n");
     printf("	TAKE BACK - 5\n");
     printf("	SORT - 6\n");
-    printf("	REVERSE - 7\n\n");
+    printf("	DELETE KEY - 7\n\n");
 }
 
-void print_list_tab(int *tab, int elements)
+void printList(struct Node *node)
 {
-    for (int i = 0; i < elements; i++)
+    while (node != NULL)
     {
-
-        printf("stack[%d] = ", i);
-        printf("%d\n", tab[i]);
+        printf(" %d ", node->data);
+        node = node->next;
     }
+}
+
+void push_front(struct Node **head_ref, int new_data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = new_data;
+    new_node->next = (*head_ref);
+    (*head_ref) = new_node;
+}
+
+void push_back(struct Node **head_ref, int new_data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    struct Node *last = *head_ref;
+
+    new_node->data = new_data;
+    new_node->next = NULL;
+
+    if (*head_ref == NULL)
+    {
+        *head_ref = new_node;
+        return;
+    }
+
+    while (last->next != NULL)
+        last = last->next;
+
+    last->next = new_node;
+    return;
+}
+
+void push_between(struct Node *prev_node, int new_data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+
+    new_node->data = new_data;
+    new_node->next = prev_node->next;
+    prev_node->next = new_node;
+}
+
+void del_key(struct Node **head_ref, int key)
+{
+    struct Node *temporary = *head_ref, *prev;
+
+
+    if ((temporary != NULL) && (temporary->data == key))
+    {
+        *head_ref = temporary->next;
+        free(temporary);
+        return;
+    }
+
+    while ((temporary != NULL) && (temporary->data != key))
+    {
+        prev = temporary;
+        temporary = temporary->next;
+    }
+
+    if (temporary == NULL)
+    {
+        return;
+    }
+
+    prev->next = temporary->next;
+
+    free(temporary);
 }
 
 void main()
 {
+    struct Node *head = NULL;
     int command = 1;
-    int stack[5] = {0};
-    __intptr_t *wsk = NULL;
-    int pointer = 0;
+    int data = 0;
 
     while (command)
     {
 
         Init_program();
-        print_stack_tab(stack, STACK_LENGTH);
 
+        printf("Give the command: ");
         scanf("%d", &command);
 
         switch (command)
@@ -65,29 +133,50 @@ void main()
         case EXIT:
         {
             system("clear");
-            printf("EXIT!");
-        }
-        break;
-
-        case TAKE:
-        {
-            pointer--;
-            printf("Ostatnia liczba %d\n", stack[pointer]);
-            stack[pointer] = 0;
-        }
-        break;
-
-        case PUT:
-        {
-            scanf("%d", &stack[pointer]);
-            pointer++;
+            printf("EXIT!\n");
         }
         break;
 
         case STATUS:
         {
+            printList(head);
         }
         break;
+
+        case PUT_FRONT:
+        {
+            printf("Give the data: ");
+            scanf("%d", &data);
+            push_front(&head, data);
+        }
+        break;
+
+        case PUT_BACK:
+        {
+            printf("Give the data: ");
+            scanf("%d", &data);
+            push_back(&head, data);
+        }
+        break;
+
+        case PUT_BETWEEN:
+        {
+        }
+        break;
+
+        case TAKE_BACK:
+        {
+        }
+        break;
+
+        case DELETE_KEY:
+        {
+            printf("Give the data to delete: ");
+            scanf("%d", &data);
+            del_key(&head, data);
+        }
+        break;
+
         default:
             break;
         }
