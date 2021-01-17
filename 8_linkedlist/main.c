@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "command.h"
 
 struct Node
 {
@@ -10,18 +11,6 @@ struct Node
     struct Node *next;
 };
 
-enum
-{
-    EXIT = 0,
-    STATUS = 1,
-    PUT_FRONT = 2,
-    PUT_BACK = 3,
-    PUT_BETWEEN = 4,
-    TAKE_BACK = 5,
-    SIZE = 6,
-    DELETE_KEY = 7,
-
-};
 
 void Init_program()
 {
