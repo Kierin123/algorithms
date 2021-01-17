@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 
+
 struct Node
 {
     int data;
@@ -75,32 +76,6 @@ void push_back(struct Node **head_ref, int new_data)
 
     last->next = new_node;
     return;
-}
-
-void push_between(struct Node *head, int new_data, int position)
-{
-
-  struct Node* current = head; 
-  
-    // the index of the 
-    // node we're currently 
-    // looking at 
-    int count = 0; 
-    while (current != NULL) { 
-        if (count == position) 
-            break; 
-        count++; 
-        current = current->next; 
-    } 
-  
-    /* if we get to this line, 
-       the caller was asking 
-       for a non-existent element 
-       so we assert fail */
-   
-    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
-    new_node->next = current;
-    new_node->data = new_data;
 }
 
 int get_size(struct Node **head_ref)
@@ -201,12 +176,7 @@ void main()
         case PUT_BETWEEN:
         {
 
-            printf("Give the data: ");
-            scanf("%d", &data);
-            printf("Give the position: ");
-            scanf("%d", &pos);
-
-            push_between(head, data, pos);
+         
         }
         break;
 
