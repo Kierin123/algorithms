@@ -17,7 +17,7 @@ enum
     PUT_BACK = 3,
     PUT_BETWEEN = 4,
     TAKE_BACK = 5,
-    SORT = 6,
+    SIZE = 6,
     DELETE_KEY = 7,
 
 };
@@ -32,10 +32,10 @@ void Init_program()
     printf("	EXIT - 0\n");
     printf("	STATUS - 1\n");
     printf("	PUT FRONT - 2\n");
-    printf("	PUT BACK - 3\n\n");
-    printf("	TAKE FRONT - 4\n");
+    printf("	PUT BACK - 3\n");
+    printf("	PUT BETWEEN - 4\n");
     printf("	TAKE BACK - 5\n");
-    printf("	SORT - 6\n");
+    printf("	SIZE - 6\n");
     printf("	DELETE KEY - 7\n\n");
 }
 
@@ -77,19 +77,51 @@ void push_back(struct Node **head_ref, int new_data)
     return;
 }
 
-void push_between(struct Node *prev_node, int new_data)
+void push_between(struct Node *head, int new_data, int position)
 {
-    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
 
+  struct Node* current = head; 
+  
+    // the index of the 
+    // node we're currently 
+    // looking at 
+    int count = 0; 
+    while (current != NULL) { 
+        if (count == position) 
+            break; 
+        count++; 
+        current = current->next; 
+    } 
+  
+    /* if we get to this line, 
+       the caller was asking 
+       for a non-existent element 
+       so we assert fail */
+   
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->next = current;
     new_node->data = new_data;
-    new_node->next = prev_node->next;
-    prev_node->next = new_node;
+}
+
+int get_size(struct Node **head_ref)
+{
+    struct Node *temporary = *head_ref, *prev;
+
+    int list_size = 0;
+
+    while (temporary != NULL)
+    {
+        prev = temporary;
+        temporary = temporary->next;
+        list_size++;
+    }
+
+    return list_size;
 }
 
 void del_key(struct Node **head_ref, int key)
 {
     struct Node *temporary = *head_ref, *prev;
-
 
     if ((temporary != NULL) && (temporary->data == key))
     {
@@ -119,6 +151,7 @@ void main()
     struct Node *head = NULL;
     int command = 1;
     int data = 0;
+    int pos = 0;
 
     while (command)
     {
@@ -159,13 +192,21 @@ void main()
         }
         break;
 
-        case PUT_BETWEEN:
+        case SIZE:
         {
+            printf("List length: %d", get_size(&head));
         }
         break;
 
-        case TAKE_BACK:
+        case PUT_BETWEEN:
         {
+
+            printf("Give the data: ");
+            scanf("%d", &data);
+            printf("Give the position: ");
+            scanf("%d", &pos);
+
+            push_between(head, data, pos);
         }
         break;
 
