@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define PRINT_SORTED
+#define PRINT_NOTSORTED
+
+
 //_______ Fill pointed array by the random values in range 0 - 100 ___
 
 void rand_arr(int *arr_f, int elements)
@@ -34,7 +38,7 @@ void copy_arr(int *arr_f1, int *arr_f2, int elements)
     }
 }
 
-// _______ Bubbel sort algorithm - sorting the elements of the array by comparing all values one by one ____ 
+// _______ Bubbel sort algorithm - sorting the elements of the array by comparing all values one by one ____
 
 void bubbel_sort(int *arr_f, int elements)
 {
@@ -92,15 +96,15 @@ void quick_sort(int *arr_f, int index_l, int index_r)
 
 int main()
 {
-    clock_t start, stop;                // time marks
-    float time_bubbel, time_quick;      // sorting time values
+    clock_t start, stop;           // time marks
+    float time_bubbel, time_quick; // sorting time values
 
-    int arr_elements;                   // array elements
+    int arr_elements; // array elements
     system("clear");
     printf("Give the array length: ");
     scanf("%d", &arr_elements);
-    int *arr1;                          // define the array 1 of intigers
-    int *arr2;                          // define the array 2 of intigers
+    int *arr1; // define the array 1 of intigers
+    int *arr2; // define the array 2 of intigers
     srand(time(NULL));
 
     //__________ ALLOCATE THE MEMORY FOR 2 ARRAYS __________________________
@@ -111,10 +115,12 @@ int main()
     rand_arr(arr1, arr_elements);
     copy_arr(arr1, arr2, arr_elements);
 
-    //  printf("Elements of the array 1: ");
-    //  print_arr(arr1, arr_elements);
-    //  printf("Elements of the array 2: ");
-    //  print_arr(arr2, arr_elements);
+#ifdef PRINT_NOTSORTED
+    printf("Sorted quick elements of the array 1: ");
+    print_arr(arr1, arr_elements);
+    printf("Sorted bubble elements of the array 2: ");
+    print_arr(arr2, arr_elements);
+#endif
 
     //__________ BUBBLE SORT _ TIME MEASURE ________________________________
 
@@ -132,10 +138,12 @@ int main()
 
     printf("\n");
 
-    //    printf("Sorted quick elements of the array 1: ");
-    //    print_arr(arr1, arr_elements);
-    //    printf("Sorted bubble elements of the array 2: ");
-    //    print_arr(arr2, arr_elements);
+#ifdef PRINT_SORTED
+    printf("Sorted quick elements of the array 1: ");
+    print_arr(arr1, arr_elements);
+    printf("Sorted bubble elements of the array 2: ");
+    print_arr(arr2, arr_elements);
+#endif
 
     printf("Sorted bubbel the array in time: % 10.2f ms\n", time_bubbel * 1000);
     printf("Sorted quick the array in time: % 10.2f ms\n", time_quick * 1000);
